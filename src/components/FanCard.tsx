@@ -10,6 +10,7 @@ export type CardData = {
   scoreAway: string;
   vibeId: string;
   phrase: string;
+  matchDate: string;
   premium: boolean;
 };
 
@@ -62,6 +63,19 @@ export const FanCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
         </div>
       </div>
 
+      {/* Big seal/badge — top-right floating */}
+      <div
+        className="absolute top-16 right-4 -rotate-12 px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest z-10"
+        style={{
+          background: "var(--gradient-gold)",
+          color: "oklch(0.18 0.04 260)",
+          boxShadow: "0 4px 12px oklch(0 0 0 / 0.4)",
+          border: "2px solid oklch(0.18 0.04 260 / 0.3)",
+        }}
+      >
+        ★ {vibe.label}
+      </div>
+
       {/* Photo */}
       <div className="relative px-6 pt-4 flex justify-center">
         <div
@@ -91,17 +105,9 @@ export const FanCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
         </div>
       </div>
 
-      {/* Vibe badge */}
-      <div className="relative px-6 pt-3 flex justify-center">
-        <div
-          className="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider"
-          style={{
-            background: "oklch(0 0 0 / 0.85)",
-            color: "oklch(0.86 0.19 95)",
-          }}
-        >
-          {vibe.emoji} {vibe.label}
-        </div>
+      {/* Vibe emoji line */}
+      <div className="relative pt-2 text-center text-xs font-bold opacity-90">
+        {vibe.emoji} {vibe.label}
       </div>
 
       {/* Score prediction */}
@@ -143,7 +149,10 @@ export const FanCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
           style={{ background: "currentColor" }}
         />
         <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-wider">
-          <span>⚽ TorcedorCard</span>
+          <span>
+            {team.flag} {team.code} vs {opponent.code} {opponent.flag}
+            {data.matchDate ? ` · ${data.matchDate}` : ""}
+          </span>
           {!data.premium && <span className="opacity-70">torcedorcard.app</span>}
           {data.premium && <span style={{ color: "oklch(0.18 0.04 260)" }}>★ PREMIUM</span>}
         </div>
