@@ -10,6 +10,9 @@ export function SiteHeader() {
         <Link to="/criar" className="opacity-70 hover:opacity-100">
           Criar
         </Link>
+        <Link to="/jogos" className="opacity-70 hover:opacity-100">
+          Jogos ⚽
+        </Link>
         <Link
           to="/premium"
           className="px-3 py-1.5 rounded-full"
