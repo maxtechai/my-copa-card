@@ -103,6 +103,13 @@ function CriarPage() {
               <span className="text-2xl font-black opacity-50">×</span>
               <ScoreInput value={data.scoreAway} onChange={(v) => setData({ ...data, scoreAway: v })} />
             </div>
+            <button
+              type="button"
+              onClick={() => navigate({ to: "/jogos" })}
+              className="mt-2 text-[11px] font-bold underline opacity-70 hover:opacity-100"
+            >
+              ⚽ Pegar palpite da Central de Jogos
+            </button>
           </Field>
 
           <Field label="Data do jogo">
