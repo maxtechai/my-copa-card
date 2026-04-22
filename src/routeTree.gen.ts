@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResultadoRouteImport } from './routes/resultado'
 import { Route as PremiumRouteImport } from './routes/premium'
+import { Route as JogosRouteImport } from './routes/jogos'
 import { Route as CriarRouteImport } from './routes/criar'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -22,6 +23,11 @@ const ResultadoRoute = ResultadoRouteImport.update({
 const PremiumRoute = PremiumRouteImport.update({
   id: '/premium',
   path: '/premium',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JogosRoute = JogosRouteImport.update({
+  id: '/jogos',
+  path: '/jogos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CriarRoute = CriarRouteImport.update({
@@ -38,12 +44,14 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/criar': typeof CriarRoute
+  '/jogos': typeof JogosRoute
   '/premium': typeof PremiumRoute
   '/resultado': typeof ResultadoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/criar': typeof CriarRoute
+  '/jogos': typeof JogosRoute
   '/premium': typeof PremiumRoute
   '/resultado': typeof ResultadoRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/criar': typeof CriarRoute
+  '/jogos': typeof JogosRoute
   '/premium': typeof PremiumRoute
   '/resultado': typeof ResultadoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/criar' | '/premium' | '/resultado'
+  fullPaths: '/' | '/criar' | '/jogos' | '/premium' | '/resultado'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/criar' | '/premium' | '/resultado'
-  id: '__root__' | '/' | '/criar' | '/premium' | '/resultado'
+  to: '/' | '/criar' | '/jogos' | '/premium' | '/resultado'
+  id: '__root__' | '/' | '/criar' | '/jogos' | '/premium' | '/resultado'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CriarRoute: typeof CriarRoute
+  JogosRoute: typeof JogosRoute
   PremiumRoute: typeof PremiumRoute
   ResultadoRoute: typeof ResultadoRoute
 }
@@ -83,6 +93,13 @@ declare module '@tanstack/react-router' {
       path: '/premium'
       fullPath: '/premium'
       preLoaderRoute: typeof PremiumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jogos': {
+      id: '/jogos'
+      path: '/jogos'
+      fullPath: '/jogos'
+      preLoaderRoute: typeof JogosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/criar': {
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CriarRoute: CriarRoute,
+  JogosRoute: JogosRoute,
   PremiumRoute: PremiumRoute,
   ResultadoRoute: ResultadoRoute,
 }
