@@ -22,6 +22,7 @@ export const FanCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
   const team = TEAMS.find((t) => t.code === data.teamCode) ?? TEAMS[0];
   const opponent = TEAMS.find((t) => t.code === data.opponentCode) ?? TEAMS[1];
   const vibe = VIBES.find((v) => v.id === data.vibeId) ?? VIBES[0];
+  const cardId = makeCardId(data);
 
   return (
     <div
@@ -59,7 +60,7 @@ export const FanCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
           className="text-[10px] font-black px-2 py-1 rounded-md"
           style={{ background: "oklch(0 0 0 / 0.25)", color: "oklch(0.98 0.01 90)" }}
         >
-          #{(team.code + (data.name || "fan")).slice(0, 8).toUpperCase()}
+          #{cardId}
         </div>
       </div>
 
