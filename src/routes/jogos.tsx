@@ -11,6 +11,18 @@ import {
 } from "@/lib/predictionsStore";
 import { loadCard, saveCard } from "@/lib/cardStore";
 
+function autoPhrase(sh: string, sa: string): string {
+  const h = parseInt(sh || "0", 10) || 0;
+  const a = parseInt(sa || "0", 10) || 0;
+  const diff = h - a;
+  if (h === 0 && a === 0) return "0x0? Tô só zoando 😅 (ou não)";
+  if (diff >= 3) return "Tô confiante demais 😎 se errar pode me cobrar";
+  if (diff <= -3) return "Vai doer… mas eu avisei 😩";
+  if (diff === 0) return "Vai pro pênalti, escreve aí 🎯";
+  if (diff > 0) return "Vai ser sofrido… mas vai dar 🇧🇷";
+  return "Se errar esse placar, podem me cobrar 😳";
+}
+
 export const Route = createFileRoute("/jogos")({
   component: JogosPage,
   head: () => ({
@@ -176,6 +188,12 @@ function MatchCard({
       scoreHome: sh,
       scoreAway: sa,
       matchDate: dateLabel,
+      // Sobrescreve a frase apenas se o usuário ainda não personalizou
+      phrase:
+        !card.phrase ||
+        card.phrase === "Se errar o placar pago uma pizza 🍕"
+          ? autoPhrase(sh, sa)
+          : card.phrase,
     });
     navigate({ to: "/criar" });
   };

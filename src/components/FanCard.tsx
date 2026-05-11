@@ -22,6 +22,7 @@ export const FanCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
   const team = TEAMS.find((t) => t.code === data.teamCode) ?? TEAMS[0];
   const opponent = TEAMS.find((t) => t.code === data.opponentCode) ?? TEAMS[1];
   const vibe = VIBES.find((v) => v.id === data.vibeId) ?? VIBES[0];
+  const cardId = makeCardId(data);
 
   return (
     <div
@@ -59,7 +60,7 @@ export const FanCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
           className="text-[10px] font-black px-2 py-1 rounded-md"
           style={{ background: "oklch(0 0 0 / 0.25)", color: "oklch(0.98 0.01 90)" }}
         >
-          #{(team.code + (data.name || "fan")).slice(0, 8).toUpperCase()}
+          #{cardId}
         </div>
       </div>
 
@@ -162,3 +163,22 @@ export const FanCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
 });
 
 FanCard.displayName = "FanCard";
+
+// Generates a stable, random-looking 6-char alphanumeric ID per card config.
+// Same inputs => same ID, so it feels "official" but stable.
+function makeCardId(data: CardData): string {
+  const seed = `${data.teamCode}|${data.opponentCode}|${data.scoreHome}|${data.scoreAway}|${data.matchDate}|${data.name}`;
+  let h = 2166136261;
+  for (let i = 0; i < seed.length; i++) {
+    h ^= seed.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let out = "";
+  let n = h >>> 0;
+  for (let i = 0; i < 6; i++) {
+    out += alphabet[n % alphabet.length];
+    n = Math.floor(n / alphabet.length) + ((i + 1) * 7);
+  }
+  return out;
+}
