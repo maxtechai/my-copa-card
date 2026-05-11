@@ -163,3 +163,22 @@ export const FanCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
 });
 
 FanCard.displayName = "FanCard";
+
+// Generates a stable, random-looking 6-char alphanumeric ID per card config.
+// Same inputs => same ID, so it feels "official" but stable.
+function makeCardId(data: CardData): string {
+  const seed = `${data.teamCode}|${data.opponentCode}|${data.scoreHome}|${data.scoreAway}|${data.matchDate}|${data.name}`;
+  let h = 2166136261;
+  for (let i = 0; i < seed.length; i++) {
+    h ^= seed.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let out = "";
+  let n = h >>> 0;
+  for (let i = 0; i < 6; i++) {
+    out += alphabet[n % alphabet.length];
+    n = Math.floor(n / alphabet.length) + ((i + 1) * 7);
+  }
+  return out;
+}
